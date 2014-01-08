@@ -1,0 +1,4 @@
+telegraf_checklist:
+    resource: "@TelegrafChecklistBundle/Resources/config/routing.yml"
+    prefix:   /
+
