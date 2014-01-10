@@ -1,3 +1,12 @@
-telegraf_checklist_homepage:
-    pattern:  /hello/{name}
+homepage:
+    pattern:  /hello
     defaults: { _controller: TelegrafChecklistBundle:Default:index }
+create_item:
+    pattern:  /createItem/{text}
+    defaults: { _controller: TelegrafChecklistBundle:Default:createItem }
+update_item:
+    pattern:  /updateItem/{text}
+    defaults: { _controller: TelegrafChecklistBundle:Default:updateItem }
+delete_item:
+    pattern:  /deleteItem/{text}
+    defaults: { _controller: TelegrafChecklistBundle:Default:deleteItem }

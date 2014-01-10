@@ -1,1 +1,9 @@
-Hello {{ name }}!
+{% extends '::base.html.twig' %}
+
+ {% block body %}
+ 	<a href="{{ path('create_item', {'text': 'Foo'}) }}">Add</a>
+ 	{% for item in items %}
+        <h2>{{ item.text }}</h2>
+        <p>{{ item.id }}</p>
+    {% endfor %}
+ {% endblock %}
