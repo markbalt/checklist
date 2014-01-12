@@ -1,9 +1,51 @@
 {% extends '::base.html.twig' %}
 
  {% block body %}
- 	<a href="{{ path('create_item', {'text': 'Foo'}) }}">Add</a>
- 	{% for item in items %}
-        <h2>{{ item.text }}</h2>
-        <p>{{ item.id }}</p>
-    {% endfor %}
+ 	
+ 	<form role="form">
+	  <div class="form-group">
+	    <label for="itemText">Checklist item</label>
+	    <input type="text" class="form-control" id="itemText" placeholder="Enter a checklist item">
+	  </div>
+	  <button type="button" class="btn btn-default" id="addItem">Add</button>
+	</form>
+
+ 	<ul id="checklistItems">
+	 	{% for item in items %}
+	    <li id="item_{{ item.id }}">
+	    	{{ item.text }}<br />
+	      <a href="#">Tick</a>
+	      <a href="#">Edit</a>
+	      <a href="#" id="delete_{{ item.id }}" class="deleteItem">Delete</a>
+	    </li>
+	  {% endfor %}
+	</ul>
+
  {% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+{% for item in items %}
+  $( "#delete_{{ item.id }}" ).data( "id", "{{ item.id }}" );
+{% endfor %}
+
+$( "#addItem" ).click( function(event) {
+  event.preventDefault();
+  $.post('{{ path('create_item') }}', { text: $( "#itemText" ).val() }, function(data) {
+	  $( "ul#checklistItems" ).prepend('<li>'+data.text+'<br /><a href="">Tick</a> <a href="#">Edit</a> <a href="#" id="delete_'+data.id+'" class="deleteItem">Delete</a></li>');
+	  $( "#itemText" ).val("");
+	  $( "#delete_"+data.id ).data( "id", data.id );
+	}, "json");
+});
+$( ".deleteItem" ).on( 'click', function(event) {
+  event.preventDefault();
+  var id = $(this).data( "id" );
+  $.post( '{{ path('delete_item') }}', { id: id }, function( data ) {
+	  $( "#item_"+data.id ).remove();
+	}, "json");
+});
+</script>
+
+{% endblock %}

@@ -27,9 +27,13 @@
                 <h1 class="title">h1.title</h1>
                 <nav>
                     <ul>
-                        <li><a href="#">nav ul li a</a></li>
-                        <li><a href="#">nav ul li a</a></li>
-                        <li><a href="#">nav ul li a</a></li>
+                        {% if app.user %}
+                            <li><a href="#">My checklists</a></li>
+                            <li><a href="#">Sign out</a></li>
+                         {% else %}
+                            <li><a href="#">Join</a></li>
+                            <li><a href="#">Sign in</a></li>
+                         {% endif %}
                     </ul>
                 </nav>
             </header>
@@ -49,10 +53,10 @@
             </footer>
         </div>
 
-        {% block javascripts %}{% endblock %}
         {% javascripts '../app/Resources/public/js/*' %}
             <script src="{{ asset_url }}" type="text/javascript"></script>
         {% endjavascripts %}
+        {% block javascripts %}{% endblock %}
         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

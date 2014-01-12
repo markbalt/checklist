@@ -2,11 +2,11 @@ homepage:
     pattern:  /hello
     defaults: { _controller: TelegrafChecklistBundle:Default:index }
 create_item:
-    pattern:  /createItem/{text}
+    pattern:  /createItem
     defaults: { _controller: TelegrafChecklistBundle:Default:createItem }
 update_item:
-    pattern:  /updateItem/{text}
+    pattern:  /updateItem/{id}/{text}
     defaults: { _controller: TelegrafChecklistBundle:Default:updateItem }
 delete_item:
-    pattern:  /deleteItem/{text}
+    pattern:  /deleteItem
     defaults: { _controller: TelegrafChecklistBundle:Default:deleteItem }
