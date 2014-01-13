@@ -5,19 +5,19 @@
  	<form role="form">
 	  <div class="form-group">
 	    <label for="itemText">Checklist item</label>
-	    <input type="text" class="form-control" id="itemText" placeholder="Enter a checklist item">
+	    <input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
 	  </div>
-	  <button type="button" class="btn btn-default" id="addItem">Add</button>
+	  <button type="button" class="btn btn-default addItem">Add</button>
+	  <button type="button" class="btn btn-default addItem">Make one up</button>
 	</form>
 
+	
  	<ul id="checklistItems">
 	 	{% for item in items %}
-	    <li id="item_{{ item.id }}">
-	    	{{ item.text }}<br />
-	      <a href="#">Tick</a>
-	      <a href="#">Edit</a>
-	      <a href="#" id="delete_{{ item.id }}" class="deleteItem">Delete</a>
-	    </li>
+	 		{{ include(
+            'TelegrafChecklistBundle:Default:item.html.twig',
+            { 'item': item, 'ajax': false }
+        ) }}
 	  {% endfor %}
 	</ul>
 
@@ -26,26 +26,34 @@
 {% block javascripts %}
 {{ parent() }}
 <script>
-
 {% for item in items %}
-  $( "#delete_{{ item.id }}" ).data( "id", "{{ item.id }}" );
+	$("#is_ticked_{{ item.id }}").data("id", "{{ item.id }}");
+  $("#delete_{{ item.id }}").data("id", "{{ item.id }}");
 {% endfor %}
 
-$( "#addItem" ).click( function(event) {
+$(".addItem").click(function(event) {
   event.preventDefault();
-  $.post('{{ path('create_item') }}', { text: $( "#itemText" ).val() }, function(data) {
-	  $( "ul#checklistItems" ).prepend('<li>'+data.text+'<br /><a href="">Tick</a> <a href="#">Edit</a> <a href="#" id="delete_'+data.id+'" class="deleteItem">Delete</a></li>');
-	  $( "#itemText" ).val("");
-	  $( "#delete_"+data.id ).data( "id", data.id );
+  var invented = ($(this).html()=="Make one up");
+  $.post('{{ path('create_item') }}', { text: $("#itemText").val(), invented: invented }, function(data) {
+	  $("ul#checklistItems").prepend(data);
+	  if (!invented) {
+	  	$("#itemText").val("");
+	  }
+	}, "html");
+});
+$("#checklistItems").on('click', ".tickItem", function(event) {
+  var id = $(this).data("id");
+  var isTicked = $(this).is(':checked')?'true':'false';
+  $.post( '{{ path('tick_item') }}', { id: id, is_ticked: isTicked }, function( data ) {
+
 	}, "json");
 });
-$( ".deleteItem" ).on( 'click', function(event) {
+$("#checklistItems").on('click', ".deleteItem", function(event) {
   event.preventDefault();
-  var id = $(this).data( "id" );
+  var id = $(this).data("id");
   $.post( '{{ path('delete_item') }}', { id: id }, function( data ) {
-	  $( "#item_"+data.id ).remove();
+	  $("#item_"+data.id ).remove();
 	}, "json");
 });
 </script>
-
 {% endblock %}

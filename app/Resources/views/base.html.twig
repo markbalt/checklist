@@ -53,7 +53,11 @@
             </footer>
         </div>
 
-        {% javascripts '../app/Resources/public/js/*' %}
+        {% javascripts
+            '../app/Resources/public/js/jquery-1.10.2.min.js'
+            '../app/Resources/public/js/bootstrap.min.js'
+            '../app/Resources/public/js/modernizr-2.6.2-respond-1.1.0.min.js'
+            '../app/Resources/public/js/*' %}
             <script src="{{ asset_url }}" type="text/javascript"></script>
         {% endjavascripts %}
         {% block javascripts %}{% endblock %}

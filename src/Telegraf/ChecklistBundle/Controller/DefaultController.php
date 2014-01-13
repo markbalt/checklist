@@ -23,7 +23,14 @@ class DefaultController extends Controller
 
   public function createItemAction(Request $request)
 	{
-  	$text = $request->request->get('text');
+		
+		// check for invented item
+		$invented = $request->request->get('invented');
+		if ($invented == 'true') {
+			$text = $this->getInventedItem();
+		} else {
+	  	$text = $request->request->get('text');
+		}
 
     $item = new Item();
     $item->setText($text);
@@ -32,10 +39,30 @@ class DefaultController extends Controller
     $dm->persist($item);
     $dm->flush();
 
-    // prepare the response
+    return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
+	}
+
+	public function tickItemAction(Request $request)
+	{
+		$id = $request->request->get('id');
+	
+    $dm = $this->get('doctrine_mongodb')->getManager();
+    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
+
+    if (!$item) {
+      throw $this->createNotFoundException('No checklist item found for id '.$id);
+    }
+   
+   	$isTicked = $request->request->get('is_ticked');
+    $item->setIsTicked($isTicked == 'true');
+    
+    $dm = $this->get('doctrine_mongodb')->getManager();
+    $dm->persist($item);
+    $dm->flush();
+
 		$response = array(
 			"id" => $item->getId(),
-			"text" => $item->getText(),
+			"is_ticked" => $item->getIsTicked(),
 		);
 
 		// return json
@@ -71,12 +98,23 @@ class DefaultController extends Controller
 	  $dm->remove($item);
 		$dm->flush();
 
-		// prepare the response
 		$response = array(
 			"id" => $item->getId(),
-			"msg" => "Deleted item."
+			"text" => $item->getText(),
+			"is_ticked" => $item->getIsTicked(),
 		);
 
     return new Response(json_encode($response)); 
+	}
+	
+	public function getInventedItem()
+	{
+		$arr = array(
+			'Match socks',
+			'Paint a self portrait',
+			'Build a house',
+		);
+		
+		return $arr[array_rand($arr)];
 	}
 }

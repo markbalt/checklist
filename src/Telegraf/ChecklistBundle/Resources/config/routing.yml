@@ -10,3 +10,6 @@ update_item:
 delete_item:
     pattern:  /deleteItem
     defaults: { _controller: TelegrafChecklistBundle:Default:deleteItem }
+tick_item:
+    pattern:  /tickItem
+    defaults: { _controller: TelegrafChecklistBundle:Default:tickItem }

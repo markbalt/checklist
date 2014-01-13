@@ -1,0 +1,14 @@
+<li id="item_{{ item.id }}">
+	<input type="checkbox" class="tickItem" id="is_ticked_{{ item.id }}" {% if item.isTicked %}checked="checked"{% endif %} />
+	<span class="tick" id="is_ticked_{{ item.id }}"></span>
+	{{ item.text }}<br />
+  <a href="#">Edit</a>
+  <a href="#" id="delete_{{ item.id }}" class="deleteItem">Delete</a>
+</li>
+
+{% if ajax %}
+<script>
+	$("#is_ticked_{{ item.id }}").data("id", "{{ item.id }}");
+  $("#delete_{{ item.id }}").data("id", "{{ item.id }}");
+</script>
+{% endif %}
