@@ -2,42 +2,54 @@
 
 namespace Telegraf\ChecklistBundle\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Gedmo\Mapping\Annotation as Gedmo;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @MongoDB\Document
+ * @ODM\Document(collection="Item")
  */
 class Item
 {
     /**
-     * @MongoDB\Id
+     * @ODM\Id
      */
     protected $id;
 
     /**
-     * @MongoDB\Field(type="string")
+     * @ODM\Field(type="string")
      */
     protected $text;
 
     /**
-     * @MongoDB\Field(type="boolean")
+     * @ODM\Field(type="boolean")
      */
     protected $isTicked;
 
     /**
-     * @MongoDB\Field(type="timestamp")
+     * @var date $created
+     *
+     * @ODM\Date
+     * @Gedmo\Timestampable(on="create")
      */
-    protected $createdAt;
+    private $created;
 
     /**
-     * @MongoDB\Field(type="timestamp")
+     * @var date $updated
+     *
+     * @ODM\Date
+     * @Gedmo\Timestampable
      */
-    protected $updatedAt;
-
+    private $updated;
+    
     /**
-     * @MongoDB\Field(type="timestamp")
+     * @var datetime $contentChanged
+     *
+     * @ODM\Date
+     * @Gedmo\Timestampable(on="change", field={"text"})
      */
-    protected $deletedAt;
+    private $contentChanged;
+    
 
     /**
      * Get id
@@ -157,5 +169,71 @@ class Item
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * Set created
+     *
+     * @param date $created
+     * @return self
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return date $created
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param date $updated
+     * @return self
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return date $updated
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set contentChanged
+     *
+     * @param date $contentChanged
+     * @return self
+     */
+    public function setContentChanged($contentChanged)
+    {
+        $this->contentChanged = $contentChanged;
+        return $this;
+    }
+
+    /**
+     * Get contentChanged
+     *
+     * @return date $contentChanged
+     */
+    public function getContentChanged()
+    {
+        return $this->contentChanged;
     }
 }

@@ -160,24 +160,33 @@ nav a:hover {
    Author's custom styles
    ========================================================================== */
 
+.checklistForm label {
+		display: none;
+}
+
 ul#checklistItems {
 		margin: 15px 0;
 		padding: 0;
 }
 
-ul#checklistItems li {
+ul#checklistItems li.checklistItem {
 		list-style: none;
-		margin: 5px 0;
-		padding: 0;
+		margin: 0;
+		padding: 10px 15px;
+		background: #fff;
+		border-bottom: #ccc 1px solid;
 }
 
+ul#checklistItems li.checklistItem ul.itemActions li {
+		list-style: none;
+		display: inline-block;
+		margin: 0 5px;
+		font-size: 12px;
+}
 
-
-
-
-
-
-
+ul#checklistItems li.checklistItem ul.itemActions li a {
+		color: #ccc;
+}
 
 /* ==========================================================================
    Media Queries
