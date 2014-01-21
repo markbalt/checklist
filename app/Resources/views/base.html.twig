@@ -28,7 +28,14 @@
                 <nav>
                     <ul>
                         {% if app.user %}
-                            <li><a href="#">My checklists</a></li>
+                            <li class="dropdown">
+			                    		<a id="dropdownMenu1" data-toggle="dropdown" href="#">My checklists<span class="caret"></span></a>
+														  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+														  </ul>
+													  </li>
                             <li><a href="#">Sign out</a></li>
                          {% else %}
                             <li><a href="#">Join</a></li>

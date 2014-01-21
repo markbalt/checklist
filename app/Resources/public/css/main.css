@@ -188,6 +188,10 @@ ul#checklistItems li.checklistItem ul.itemActions li a {
 		color: #ccc;
 }
 
+ul#checklistItems li.checklistItem ul.itemActions li a:hover {
+		color: #999;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
