@@ -3,12 +3,11 @@
 namespace Telegraf\ChecklistBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Telegraf\ChecklistBundle\Document\Item;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\HttpFoundation\Response;
+use Telegraf\ChecklistBundle\Form\Type\RegistrationType;
+use Telegraf\ChecklistBundle\Form\Model\Registration;
 
 class DefaultController extends Controller
 {

@@ -13,3 +13,16 @@ delete_item:
 tick_item:
     pattern:  /tickItem
     defaults: { _controller: TelegrafChecklistBundle:Default:tickItem }
+join:
+    pattern:  /join
+    defaults: { _controller: TelegrafChecklistBundle:Security:join }
+createUser:
+    pattern:  /join/do
+    defaults: { _controller: TelegrafChecklistBundle:Security:createUser }
+login:
+    path:   /login
+    defaults:  { _controller: TelegrafChecklistBundle:Security:login }
+login_check:
+    path:   /login_check
+logout:
+    path:   /logout

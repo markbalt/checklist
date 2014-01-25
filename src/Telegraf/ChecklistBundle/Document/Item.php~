@@ -3,11 +3,10 @@
 namespace Telegraf\ChecklistBundle\Document;
 
 use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\Document(collection="Item")
+ * @ODM\Document(collection="items")
  */
 class Item
 {

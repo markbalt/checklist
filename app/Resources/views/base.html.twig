@@ -36,10 +36,10 @@
 														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
 														  </ul>
 													  </li>
-                            <li><a href="#">Sign out</a></li>
+                            <li><a href="{{ path('logout') }}">Sign out</a></li>
                          {% else %}
-                            <li><a href="#">Join</a></li>
-                            <li><a href="#">Sign in</a></li>
+                            <li><a href="{{ path('join') }}">Join</a></li>
+                            <li><a href="{{ path('login') }}">Sign in</a></li>
                          {% endif %}
                     </ul>
                 </nav>
