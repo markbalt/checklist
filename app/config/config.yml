@@ -28,7 +28,10 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-
+    form:
+        resources:
+            - 'TelegrafChecklistBundle:Form:fields.html.twig'
+            
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
