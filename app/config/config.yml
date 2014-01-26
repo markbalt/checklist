@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator: ~
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -96,7 +96,7 @@ doctrine_mongodb:
             default:
                 server: mongodb://localhost:27017
                 options: {}
-        default_database: test_database
+        default_database: checklist
         document_managers:
             default:
                 auto_mapping: true

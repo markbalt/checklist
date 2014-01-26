@@ -37,6 +37,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ODM\Field(type="string")
      * @Assert\NotBlank()
+     * @Assert\Length(max = 4096)
      */
     protected $password;
     

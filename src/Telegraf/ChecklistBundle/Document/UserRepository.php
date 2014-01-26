@@ -12,6 +12,8 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
 {
     public function loadUserByUsername($username)
     {
+    		echo 'here';
+    		exit;
         $q = $this->get('doctrine_mongodb')
 			    ->getManager()
 	    		->createQueryBuilder('TelegrafChecklistBundle:User')
@@ -51,7 +53,7 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $this->getEntityName() === $class
+        return $this->getDocumentName() === $class
             || is_subclass_of($class, $this->getEntityName());
     }
 }
