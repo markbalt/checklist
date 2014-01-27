@@ -1,9 +1,0 @@
-{% extends '::base.html.twig' %}
-
-{% block body %}
-
-<form role="form" action="{{ path('createUser')}}" method="post" {{ form_enctype(form) }}>
-  {{ form_widget(form) }}
-</form>
-
-{% endblock %}

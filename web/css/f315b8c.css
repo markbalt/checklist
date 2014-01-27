@@ -82,7 +82,6 @@ body {
    =================== */
 
 .header-container {
-    background: #e0e1e2;
 }
 
 .footer-container,
@@ -94,7 +93,17 @@ body {
 .main aside {
 }
 
-.title {
+.title a {
+		color: #555;
+}
+
+.title a:hover {
+		-webkit-transition: color 300ms ease-in;
+    -moz-transition: color 300ms ease-in;
+    -o-transition: color 300ms ease-in;
+    transition: color 300ms ease-in;
+    text-decoration: none;
+    color: #06e;
 }
 
 /* ==============
@@ -106,29 +115,24 @@ nav ul {
     padding: 0;
 }
 
-nav a {
+nav a,
+nav a:visited {
     display: block;
     margin-bottom: 10px;
     padding: 15px 0;
-
     text-align: center;
     text-decoration: none;
     font-weight: bold;
-
     text-transform: uppercase;
     font-size: 12px;
+    color: #555;
 }
 
-nav a:hover,
-nav a:visited {
-    color: #555;
+nav a:hover {
 		-webkit-transition: color 300ms ease-in;
     -moz-transition: color 300ms ease-in;
     -o-transition: color 300ms ease-in;
     transition: color 300ms ease-in;
-}
-
-nav a:hover {
     text-decoration: none;
     color: #06e;
 }
@@ -195,6 +199,10 @@ ul#checklistItems li.checklistItem ul.itemActions li a {
 		color: #ccc;
 }
 
+ul#checklistItems li.checklistItem ul.itemActions li a:hover {
+		color: #999;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
@@ -207,7 +215,6 @@ ul#checklistItems li.checklistItem ul.itemActions li a {
 
     nav a {
         float: left;
-        width: 27%;
         margin: 0 1.7%;
         padding: 25px 2%;
         margin-bottom: 0;
@@ -255,7 +262,6 @@ ul#checklistItems li.checklistItem ul.itemActions li a {
 
     nav {
         float: right;
-        width: 38%;
     }
 
 /* ============

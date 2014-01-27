@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+{% for type, messages in app.session.flashbag.all() %}
+    {% for key, message in messages %}
+        <div class="alert alert-{{ type }}">
+            {{ message|trans({}, 'FOSUserBundle') }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div>
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
+</div>
+
+<div class="row" style="margin-top: 15px;">
+  <div class="col-md-12">
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+        <a href="{{ path('fos_user_security_logout') }}">
+            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+        </a>
+    {% else %}
+        {# Already have an account?  <a href="{{ path('fos_user_security_login') }}">Sign in</a> #}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -208,7 +208,6 @@ ul#checklistItems li.checklistItem ul.itemActions li a:hover {
 
     nav a {
         float: left;
-        width: 27%;
         margin: 0 1.7%;
         padding: 25px 2%;
         margin-bottom: 0;
@@ -256,7 +255,7 @@ ul#checklistItems li.checklistItem ul.itemActions li a:hover {
 
     nav {
         float: right;
-        width: 38%;
+        width: 60%;
     }
 
 /* ============

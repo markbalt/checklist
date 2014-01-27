@@ -28,18 +28,13 @@
                 <nav>
                     <ul>
                         {% if app.user %}
-                            <li class="dropdown">
-			                    		<a id="dropdownMenu1" data-toggle="dropdown" href="#">My checklists<span class="caret"></span></a>
-														  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-														    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-														  </ul>
-													  </li>
-                            <li><a href="{{ path('logout') }}">Sign out</a></li>
+                            <li><a href="{{ path('homepage') }}">Checklists</a></li>
+                            <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
+                            <li><a href="{{ path('fos_user_profile_edit') }}">Edit profile</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}">Sign out</a></li>
                          {% else %}
-                            <li><a href="{{ path('join') }}">Join</a></li>
-                            <li><a href="{{ path('login') }}">Sign in</a></li>
+                            <li><a href="{{ path('fos_user_registration_register') }}">Join</a></li>
+                            <li><a href="{{ path('fos_user_security_login') }}">Sign in</a></li>
                          {% endif %}
                     </ul>
                 </nav>
@@ -60,11 +55,7 @@
             </footer>
         </div>
 
-        {% javascripts
-            '../app/Resources/public/js/jquery-1.10.2.min.js'
-            '../app/Resources/public/js/bootstrap.min.js'
-            '../app/Resources/public/js/modernizr-2.6.2-respond-1.1.0.min.js'
-            '../app/Resources/public/js/*' %}
+        {% javascripts %}
             <script src="{{ asset_url }}" type="text/javascript"></script>
         {% endjavascripts %}
         {% block javascripts %}{% endblock %}
