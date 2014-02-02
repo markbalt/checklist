@@ -8,7 +8,6 @@
 	    <input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
 	  </div>
 	  <button type="button" class="btn btn-default addItem">Add</button>
-	  <button type="button" class="btn btn-default addItem">Make one up</button>
 	</form>
 
 	
@@ -33,12 +32,9 @@
 
 $(".addItem").click(function(event) {
   event.preventDefault();
-  var invented = ($(this).html()=="Make one up");
-  $.post('{{ path('create_item') }}', { text: $("#itemText").val(), invented: invented }, function(data) {
+  $.post('{{ path('create_item') }}', { text: $("#itemText").val() }, function(data) {
 	  $("ul#checklistItems").prepend(data);
-	  if (!invented) {
-	  	$("#itemText").val("");
-	  }
+	 	$("#itemText").val("");
 	}, "html");
 });
 $("#checklistItems").on('click', ".tickItem", function(event) {

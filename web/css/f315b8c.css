@@ -188,6 +188,11 @@ ul#checklistItems li.checklistItem {
 		border-bottom: #ccc 1px solid;
 }
 
+ul#checklistItems li.checklistItem ul.itemActions {
+		margin: 0 25px;
+		padding: 0;
+}
+
 ul#checklistItems li.checklistItem ul.itemActions li {
 		list-style: none;
 		display: inline-block;
@@ -201,6 +206,10 @@ ul#checklistItems li.checklistItem ul.itemActions li a {
 
 ul#checklistItems li.checklistItem ul.itemActions li a:hover {
 		color: #999;
+}
+
+ul#checklistItems li.checklistItem .itemText {
+		margin: 0 10px;
 }
 
 /* ==========================================================================
@@ -262,6 +271,7 @@ ul#checklistItems li.checklistItem ul.itemActions li a:hover {
 
     nav {
         float: right;
+        width: 60%;
     }
 
 /* ============

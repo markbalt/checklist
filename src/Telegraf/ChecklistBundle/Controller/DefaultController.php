@@ -31,16 +31,9 @@ class DefaultController extends Controller
   }
 
   public function createItemAction(Request $request)
-	{
-		// "make up" an item?
-		$invented = $request->request->get('invented');
-		if ($invented == 'true') {
-			$text = $this->getInventedItem();
-		} else {
-		
-			// get the item text
-	  	$text = $request->request->get('text');
-		}
+	{		
+		// get the item text
+  	$text = $request->request->get('text');
 
 		// create a new checklist item
     $item = new Item();
@@ -133,19 +126,5 @@ class DefaultController extends Controller
 
 		// return json
     return new Response(json_encode($response)); 
-	}
-	
-	public function getInventedItem()
-	{
-		// TODO: move to yml
-		$arr = array(
-			'Match socks',
-			'Paint a self portrait',
-			'Build a house',
-			'Take dog to the groomers',
-			'Read War and Peace',
-		);
-		
-		return $arr[array_rand($arr)];
 	}
 }
