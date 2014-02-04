@@ -11,14 +11,14 @@ use Telegraf\ChecklistBundle\Form\Model\Registration;
 
 class DefaultController extends Controller
 {
-  public function indexAction()
-  {
-  	// get the appropriate checklist items
-  	$items = $this->get('doctrine_mongodb')
+	public function indexAction()
+	{
+		// get the appropriate checklist items
+		$items = $this->get('doctrine_mongodb')
 		    ->getManager()
-    		->createQueryBuilder('TelegrafChecklistBundle:Item')
-        //->field('user')->equals('foo')
-        ->sort(array(
+			->createQueryBuilder('TelegrafChecklistBundle:Item')
+		    //->field('user')->equals('foo')
+		    ->sort(array(
 			    'isTicked'  => 'ASC',
 			    'ticked' => 'DESC',
 			    'created' => 'DESC',
@@ -27,28 +27,28 @@ class DefaultController extends Controller
 		    ->execute();
 
 		// render html response
-    return $this->render('TelegrafChecklistBundle:Default:index.html.twig', array('items' => $items));
-  }
+		return $this->render('TelegrafChecklistBundle:Default:index.html.twig', array('items' => $items));
+	}
 
-  public function createItemAction(Request $request)
+	public function createItemAction(Request $request)
 	{		
 		// get the item text
-  	$text = $request->request->get('text');
+  		$text = $request->request->get('text');
 
 		// create a new checklist item
-    $item = new Item();
-    $item->setText($text);
-    // TODO: this should be handled by behaviors
-    $item->setCreated(new \DateTime());
-    $item->setIsTicked(false);
-    
-    // persist to the database
-    $dm = $this->get('doctrine_mongodb')->getManager();
-    $dm->persist($item);
-    $dm->flush();
+	    $item = new Item();
+	    $item->setText($text);
+	    // TODO: this should be handled by behaviors
+	    $item->setCreated(new \DateTime());
+	    $item->setIsTicked(false);
+	    
+	    // persist to the database
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $dm->persist($item);
+	    $dm->flush();
 
 		// render html response
-    return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
+    	return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
 	}
 
 	public function tickItemAction(Request $request)
@@ -56,24 +56,24 @@ class DefaultController extends Controller
 		$id = $request->request->get('id');
 	
 		// validate the item id
-    $dm = $this->get('doctrine_mongodb')->getManager();
-    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
 
 		// check the item object
-    if (!$item) {
-      throw $this->createNotFoundException('No checklist item found for id '.$id);
-    }
+	    if (!$item) {
+	      throw $this->createNotFoundException('No checklist item found for id '.$id);
+	    }
    
 		// check the ticked parameter
-   	$isTicked = $request->request->get('is_ticked');
-   	$item->setIsTicked($isTicked == 'true');
-    $item->setTicked( ($isTicked == 'true')?new \DateTime():null);
-    
-    // update the document
-    $dm = $this->get('doctrine_mongodb')->getManager();
-    $dm->persist($item);
-    $dm->flush();
-    
+	   	$isTicked = $request->request->get('is_ticked');
+	   	$item->setIsTicked($isTicked == 'true');
+	    $item->setTicked( ($isTicked == 'true')?new \DateTime():null);
+	    
+	    // update the document
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $dm->persist($item);
+	    $dm->flush();
+	    
 		// create a json response
 		$response = array(
 			"id" => $item->getId(),
@@ -81,23 +81,46 @@ class DefaultController extends Controller
 		);
 
 		// return json
-    return new Response(json_encode($response)); 
+	    return new Response(json_encode($response)); 
 	}
 
-	public function updateItemAction($id)
+	public function editItemAction($id)
 	{
 		// TODO:
-    $dm = $this->get('doctrine_mongodb')->getManager();
-    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
 
-    if (!$item) {
-      throw $this->createNotFoundException('No checklist item found for id '.$id);
-    }
+		// check the item object
+	    if (!$item) {
+	      throw $this->createNotFoundException('No checklist item found for id '.$id);
+	    }
 
-    $item->setName('New product name!');
-    $dm->flush();
+		// render html response
+    	return $this->render('TelegrafChecklistBundle:Default:edit_item.html.twig', array('item' => $item));
+	}
 
-    return $this->redirect($this->generateUrl('homepage'));
+	public function updateItemAction(Request $request)
+	{
+		$id = $request->request->get('id');
+	
+		// validate the item id
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
+
+	    if (!$item) {
+	      throw $this->createNotFoundException('No checklist item found for id '.$id);
+	    }
+
+	    $id = $request->request->get('id');
+
+	    // TODO: validate the text
+	    $text = $request->request->get('text');
+
+	    $item->setText($text);
+	    $dm->flush();
+
+		// render html response
+    	return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
 	}
 
 	public function deleteItemAction(Request $request)
@@ -105,26 +128,26 @@ class DefaultController extends Controller
 		$id = $request->request->get('id');
 	
 		// validate the item id
-    $dm = $this->get('doctrine_mongodb')->getManager();
-    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
 
-		// check the item object
-    if (!$item) {
-      throw $this->createNotFoundException('No checklist item found for id '.$id);
-    }
+			// check the item object
+	    if (!$item) {
+	      throw $this->createNotFoundException('No checklist item found for id '.$id);
+	    }
 
-		// remove document TODO: soft delete
-	  $dm->remove($item);
-		$dm->flush();
+			// remove document TODO: soft delete
+		  $dm->remove($item);
+			$dm->flush();
 
-		// create a json response
-		$response = array(
-			"id" => $item->getId(),
-			"text" => $item->getText(),
-			"is_ticked" => $item->getIsTicked(),
-		);
+			// create a json response
+			$response = array(
+				"id" => $item->getId(),
+				"text" => $item->getText(),
+				"is_ticked" => $item->getIsTicked(),
+			);
 
-		// return json
-    return new Response(json_encode($response)); 
+			// return json
+	    return new Response(json_encode($response)); 
 	}
 }

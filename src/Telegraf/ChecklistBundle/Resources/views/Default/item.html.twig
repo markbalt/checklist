@@ -2,7 +2,7 @@
 	<input type="checkbox" class="tickItem" id="is_ticked_{{ item.id }}" {% if item.ticked is not null %}checked="checked"{% endif %} />
 	<span class="itemText">{{ item.text }}</span>
   <ul class="itemActions">
-  	<li><a href="#">Edit</a></li>
+  	<li><a href="#" id="edit_{{ item.id }}" class="editItem">Edit</a></li>
   	<li><a href="#" id="delete_{{ item.id }}" class="deleteItem">Delete</a></li>
   	{% if item.created is not empty %}
   		<li>Created: {{ item.created|date("m/d/y g:i:s a") }}</li>
@@ -15,7 +15,9 @@
 
 {% if ajax %}
 <script>
-	$("#is_ticked_{{ item.id }}").data("id", "{{ item.id }}");
-  $("#delete_{{ item.id }}").data("id", "{{ item.id }}");
+    $("#item_{{ item.id }}").data("id", "{{ item.id }}");
+    $("#is_ticked_{{ item.id }}").data("id", "{{ item.id }}");
+    $("#edit_{{ item.id }}").data("id", "{{ item.id }}");
+    $("#delete_{{ item.id }}").data("id", "{{ item.id }}");
 </script>
 {% endif %}

@@ -4,8 +4,13 @@ homepage:
 create_item:
     pattern:  /createItem
     defaults: { _controller: TelegrafChecklistBundle:Default:createItem }
+edit_item:
+    pattern:  /editItem/{id}
+    defaults: { _controller: TelegrafChecklistBundle:Default:editItem }
+    options:
+        expose: true
 update_item:
-    pattern:  /updateItem/{id}/{text}
+    pattern:  /updateItem
     defaults: { _controller: TelegrafChecklistBundle:Default:updateItem }
 delete_item:
     pattern:  /deleteItem
@@ -13,3 +18,5 @@ delete_item:
 tick_item:
     pattern:  /tickItem
     defaults: { _controller: TelegrafChecklistBundle:Default:tickItem }
+    options:
+        expose: true

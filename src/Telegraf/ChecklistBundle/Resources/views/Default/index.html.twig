@@ -5,12 +5,12 @@
 	<div class="row">
 	  <div class="col-md-12">
 	  	 	<form role="form">
-				  <div class="form-group checklistForm">
-				    <label for="itemText">Checklist item</label>
-				    <input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
-				  </div>
-				  <button type="button" class="btn btn-default addItem">Add</button>
-				</form>
+				<div class="form-group checklistForm">
+					<label for="itemText">Checklist item</label>
+					<input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
+				</div>
+				<button type="button" class="btn btn-default addItem">Add</button>
+			</form>
 	  </div>
 	</div>
 	
@@ -29,29 +29,45 @@
 {{ parent() }}
 <script>
 {% for item in items %}
+    $("#item_{{ item.id }}").data("id", "{{ item.id }}");
 	$("#is_ticked_{{ item.id }}").data("id", "{{ item.id }}");
-  $("#delete_{{ item.id }}").data("id", "{{ item.id }}");
+    $("#edit_{{ item.id }}").data("id", "{{ item.id }}");
+	$("#delete_{{ item.id }}").data("id", "{{ item.id }}");
 {% endfor %}
 
 $(".addItem").click(function(event) {
-  event.preventDefault();
-  $.post('{{ path('create_item') }}', { text: $("#itemText").val() }, function(data) {
-	  $("ul#checklistItems").prepend(data);
-	 	$("#itemText").val("");
+	event.preventDefault();
+	$.post('{{ path('create_item') }}', { text: $("#itemText").val() }, function(data) {
+		$("ul#checklistItems").prepend(data);
+		$("#itemText").val("");
 	}, "html");
 });
 $("#checklistItems").on('click', ".tickItem", function(event) {
-  var id = $(this).data("id");
-  var isTicked = $(this).is(':checked')?'true':'false';
-  $.post( '{{ path('tick_item') }}', { id: id, is_ticked: isTicked }, function( data ) {
+	var id = $(this).closest(".checklistItem").data("id");
+	var isTicked = $(this).is(':checked')?'true':'false';
+	$.post( '{{ path('tick_item') }}', { id: id, is_ticked: isTicked }, function( data ) {
 
 	}, "json");
 });
+$("#checklistItems").on('click', ".editItem", function(event) {
+	var id = $(this).closest(".checklistItem").data("id");
+	
+	$.get( Routing.generate('edit_item', { id: id }), function( data ) {
+  		$("#item_"+id).replaceWith(data);
+	}, "html");
+});
+$("#checklistItems").on('click', ".updateItem", function(event) {
+	var id = $(this).attr("ref");
+	var text = $("#update_item_text_"+id).val();
+	$.post( '{{ path('update_item') }}', { id: id, text: text }, function( data ) {
+  		$("#item_"+id).replaceWith(data);
+	}, "html");
+});
 $("#checklistItems").on('click', ".deleteItem", function(event) {
-  event.preventDefault();
-  var id = $(this).data("id");
-  $.post( '{{ path('delete_item') }}', { id: id }, function( data ) {
-	  $("#item_"+data.id ).remove();
+	event.preventDefault();
+	var id = $(this).closest(".checklistItem").data("id");
+	$.post( '{{ path('delete_item') }}', { id: id }, function( data ) {
+		$("#item_"+data.id).remove();
 	}, "json");
 });
 </script>
