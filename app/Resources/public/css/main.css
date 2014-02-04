@@ -65,14 +65,13 @@ body {
     background-color: #fff;
 }
 
-.wrapper {
-    width: 100%;
-    margin: 0 0 0 280px;
-}
-
 /* ===================
     ALL: Theme
    =================== */
+
+.wrapper {
+    margin: 0 0 0 280px;
+}
 
 .footer-container,
 .main aside {
@@ -134,7 +133,6 @@ nav a:hover {
     transition: color 300ms ease-in;
     text-decoration: none;
     color: #fff;
-    background: #111;
 }
 
 /* ==============
@@ -142,16 +140,11 @@ nav a:hover {
    ============== */
 
 .main {
-    padding: 30px 0;
+    padding: 2% 0;
 }
 
-.main article h1 {
-    font-size: 2em;
-}
-
-.main aside {
-    color: white;
-    padding: 0px 5% 10px;
+.main .row {
+    padding: 0 2%;
 }
 
 .footer-container footer {
@@ -180,12 +173,16 @@ ul#checklistItems {
 		padding: 0;
 }
 
+ul#checklistItems li.checklistItem:first-child {
+		border-top: #dededc 1px solid;
+}
+
 ul#checklistItems li.checklistItem {
 		list-style: none;
 		margin: 0;
 		padding: 10px 15px;
 		background: #fff;
-		border-bottom: #ccc 1px solid;
+		border-bottom: #dededc 1px solid;
 }
 
 ul#checklistItems li.checklistItem ul.itemActions {

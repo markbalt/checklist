@@ -1,15 +1,18 @@
 {% extends '::base.html.twig' %}
 
- {% block body %}
- 	
- 	<form role="form">
-	  <div class="form-group checklistForm">
-	    <label for="itemText">Checklist item</label>
-	    <input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
+	{% block body %}
+	
+	<div class="row">
+	  <div class="col-md-12">
+	  	 	<form role="form">
+				  <div class="form-group checklistForm">
+				    <label for="itemText">Checklist item</label>
+				    <input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
+				  </div>
+				  <button type="button" class="btn btn-default addItem">Add</button>
+				</form>
 	  </div>
-	  <button type="button" class="btn btn-default addItem">Add</button>
-	</form>
-
+	</div>
 	
  	<ul id="checklistItems">
 	 	{% for item in items %}

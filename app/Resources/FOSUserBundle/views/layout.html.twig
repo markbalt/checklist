@@ -10,13 +10,15 @@
     {% endfor %}
 {% endfor %}
 
-<div>
+<div class="row">
+  <div class="col-md-8">
     {% block fos_user_content %}
     {% endblock fos_user_content %}
+  </div>
 </div>
 
-<div class="row" style="margin-top: 15px;">
-  <div class="col-md-12">
+<div class="row">
+  <div class="col-md-8">
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
         <a href="{{ path('fos_user_security_logout') }}">
