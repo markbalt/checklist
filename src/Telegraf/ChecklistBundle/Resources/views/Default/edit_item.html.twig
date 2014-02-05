@@ -1,7 +1,10 @@
-<li class="checklistItem" id="item_{{ item.id }}">
+<li class="checklistItem editing" id="item_{{ item.id }}">
     <input type="checkbox" class="tickItem" id="is_ticked_{{ item.id }}" {% if item.ticked is not null %}checked="checked"{% endif %} />
-	<div>
+	<span class="itemText">
         <input type="text" id="update_item_text_{{ item.id }}" class="form-control" value="{{ item.text }}">
-    </div>
-    <a href="#" class="updateItem btn btn-default" role="button" ref="{{ item.id }}">Save</a>
+    </span>
+    <ul class="itemActions">
+		<li><a href="#" class="updateItem btn btn-primary" role="button" ref="{{ item.id }}">Save</a></li>
+		<li><a href="#" class="cancelItem btn btn-default" role="button" ref="{{ item.id }}">Cancel</a></li>
+	</ul>
 </li>

@@ -13,11 +13,19 @@ class DefaultController extends Controller
 {
 	public function indexAction()
 	{
+		// get the user id if there is one
+		$securityContext = $this->container->get('security.context');
+		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ) {
+		    $userId = $this->getUser()->getId();
+		} else {
+			$userId = null;
+		}
+		
 		// get the appropriate checklist items
 		$items = $this->get('doctrine_mongodb')
 		    ->getManager()
 			->createQueryBuilder('TelegrafChecklistBundle:Item')
-		    //->field('user')->equals('foo')
+		    ->field('user.id')->equals($userId)
 		    ->sort(array(
 			    'isTicked'  => 'ASC',
 			    'ticked' => 'DESC',
@@ -31,7 +39,7 @@ class DefaultController extends Controller
 	}
 
 	public function createItemAction(Request $request)
-	{		
+	{
 		// get the item text
   		$text = $request->request->get('text');
 
@@ -40,6 +48,12 @@ class DefaultController extends Controller
 	    $item->setText($text);
 	    // TODO: this should be handled by behaviors
 	    $item->setCreated(new \DateTime());
+	    
+	    // set the user if there is one
+		$securityContext = $this->container->get('security.context');
+		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ) {
+		    $item->setUser($this->getUser());
+		}
 	    $item->setIsTicked(false);
 	    
 	    // persist to the database

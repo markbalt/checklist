@@ -144,7 +144,9 @@ nav a:hover {
 }
 
 .main .row {
-    padding: 0 2%;
+    padding: 1% 0;
+    width: 100%;
+    margin: 0;
 }
 
 .footer-container footer {
@@ -197,16 +199,23 @@ ul#checklistItems li.checklistItem ul.itemActions li {
 		font-size: 12px;
 }
 
-ul#checklistItems li.checklistItem ul.itemActions li a {
-		color: #ccc;
-}
-
-ul#checklistItems li.checklistItem ul.itemActions li a:hover {
-		color: #999;
-}
-
 ul#checklistItems li.checklistItem .itemText {
 		margin: 0 10px;
+}
+
+ul#checklistItems li.checklistItem.editing .itemText {
+		margin: 0 10px;
+}
+
+ul#checklistItems li.checklistItem.editing .form-control {
+		display: inline;
+		width: 75%;
+}
+
+ul#checklistItems li.checklistItem.editing ul.itemActions {
+		margin: 0;
+		padding: 0;
+		display: inline;
 }
 
 /* ==========================================================================

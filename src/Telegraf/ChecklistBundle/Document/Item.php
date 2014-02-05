@@ -56,6 +56,9 @@ class Item
      */
     private $contentChanged;
     
+    /** @ODM\ReferenceOne(targetDocument="User") */
+    private $user;
+    
 
     /**
      * Get id
@@ -197,5 +200,27 @@ class Item
     public function getIsTicked()
     {
         return $this->isTicked;
+    }
+
+    /**
+     * Set user
+     *
+     * @param Documents\User $user
+     * @return self
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return Documents\User $user
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
