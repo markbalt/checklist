@@ -24,12 +24,12 @@
 
         <nav>
             <ul>
-		          <li><a href="{{ path('homepage') }}">Checklists</a></li>
               {% if app.user %}
-                  <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
-                  <li><a href="{{ path('fos_user_profile_edit') }}">Edit profile</a></li>
+                  <li><a href="{{ path('homepage') }}">{{ app.user }}</a></li>
+                  <li><a href="{{ path('fos_user_profile_edit') }}">Settings</a></li>
                   <li><a href="{{ path('fos_user_security_logout') }}">Sign out</a></li>
                {% else %}
+		          <li><a href="{{ path('homepage') }}">Checklists</a></li>
                   <li><a href="{{ path('fos_user_registration_register') }}">Join</a></li>
                   <li><a href="{{ path('fos_user_security_login') }}">Sign in</a></li>
                {% endif %}
@@ -46,7 +46,7 @@
 
         <div class="footer-container">
             <footer class="wrapper">
-                <h3>footer</h3>
+                <p class="text-muted">&copy; 2014 <a href="http://github.com/markbalt">Mark Baltrusaitis</a> / <a href="http://github.com/markbalt/checklist">Github Repo</a></p>
             </footer>
         </div>
 

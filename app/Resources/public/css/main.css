@@ -73,6 +73,16 @@ body {
     margin: 0 0 0 280px;
 }
 
+.main-container {
+    min-height: 100%;
+    height: auto;
+    
+    min-height: 100%;
+	height: auto;
+	margin: 0 auto -60px;
+	padding: 0 0 60px;
+}
+
 .footer-container,
 .main aside {
 }
@@ -87,7 +97,7 @@ body {
 }
 
 .title a:hover {
-		-webkit-transition: color 300ms ease-in;
+	-webkit-transition: color 300ms ease-in;
     -moz-transition: color 300ms ease-in;
     -o-transition: color 300ms ease-in;
     transition: color 300ms ease-in;
@@ -95,18 +105,14 @@ body {
     color: #06e;
 }
 
-/* ==============
-    MOBILE: Menu
-   ============== */
-   
 nav {
-		position: fixed;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 280px;
-		background-color: #191918;
-		color: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 280px;
+	background-color: #191918;
+	color: #fff;
 }
 
 nav ul {
@@ -127,7 +133,7 @@ nav a:visited {
 }
 
 nav a:hover {
-		-webkit-transition: color 300ms ease-in;
+	-webkit-transition: color 300ms ease-in;
     -moz-transition: color 300ms ease-in;
     -o-transition: color 300ms ease-in;
     transition: color 300ms ease-in;
@@ -135,12 +141,8 @@ nav a:hover {
     color: #fff;
 }
 
-/* ==============
-    MOBILE: Main
-   ============== */
-
 .main {
-    padding: 2% 0;
+    padding: 15px 0;
 }
 
 .main .row {
@@ -150,8 +152,50 @@ nav a:hover {
 }
 
 .footer-container footer {
-    color: white;
-    padding: 20px 0;
+    color: #ccc;
+    padding: 20px 15px;
+    height: 60px;
+	background-color: #f5f5f5;
+}
+
+.footer-container footer a {
+    color: #555;
+}
+
+.footer-container footer a:hover {
+    color: #555;
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
+}
+
+h1 {
+	margin-top: 0;
+	margin-bottom: 15px;
+}
+
+/* ==============
+    MOBILE: Menu
+   ============== */
+   
+nav {
+}
+
+nav ul {
+}
+
+/* ==============
+    MOBILE: Main
+   ============== */
+
+.main {
+}
+
+.main .row {
+}
+
+.footer-container footer {
 }
 
 /* ===============

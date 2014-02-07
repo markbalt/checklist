@@ -2,7 +2,18 @@
 
 <form role="form" action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
     {{ form_widget(form) }}
-    <div>
-        <input class="btn btn-default" type="submit" value="Join" />
-    </div>
+    <input class="btn btn-default" type="submit" value="Join" />
 </form>
+
+<div class="row">
+	<div class="col-md-8">
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+	    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+	    <a href="{{ path('fos_user_security_logout') }}">
+	        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+	    </a>
+	{% else %}
+	    Already have an account?  <a href="{{ path('fos_user_security_login') }}">Sign in</a>
+	{% endif %}
+	</div>
+</div>
