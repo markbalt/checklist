@@ -4,16 +4,16 @@
 	
 	<div class="row">
 	  <div class="col-md-12">
-	  	 	<form role="form">
-				<div class="form-group checklistForm">
-					<label for="itemText">Checklist item</label>
-					<input type="text" class="form-control" id="itemText" placeholder="Enter a task" />
-				</div>
-				<button type="button" class="btn btn-default addItem">Add</button>
-			</form>
+		<form role="form">
+			<div class="form-group checklistForm">
+				<label for="newItemText">Enter a Task:</label>
+				<input type="text" class="form-control" id="newItemText" placeholder="My task..." />
+			</div>
+			<button type="button" class="btn btn-default" id="addItem">Add</button>
+		</form>
 	  </div>
 	</div>
-	
+
  	<ul id="checklistItems">
 	 	{% for item in items %}
 	 		{{ include(
@@ -30,28 +30,36 @@
 <script>
 {% for item in items %}
     $("#item_{{ item.id }}").data("id", "{{ item.id }}");
-	$("#is_ticked_{{ item.id }}").data("id", "{{ item.id }}");
-    $("#edit_{{ item.id }}").data("id", "{{ item.id }}");
-	$("#delete_{{ item.id }}").data("id", "{{ item.id }}");
 {% endfor %}
 
-$(".addItem").click(function(event) {
+$('#newItemText').keypress(function(e){
+	if(e.keyCode==13) {
+		$('#addItem').click();
+		e.preventDefault();
+	}
+});
+$('.editItemText').keypress(function(e){
+	if(e.keyCode==13) {
+		$(this).closest('.saveItem').click();
+		e.preventDefault();
+	}
+});
+$("#addItem").click(function(event) {
 	event.preventDefault();
-	$.post('{{ path('create_item') }}', { text: $("#itemText").val() }, function(data) {
+	$.post('{{ path('create_item') }}', { text: $("#newItemText").val() }, function(data) {
 		$("ul#checklistItems").prepend(data);
-		$("#itemText").val("");
+		$("#newItemText").val("");
 	}, "html");
 });
 $("#checklistItems").on('click', ".tickItem", function(event) {
 	var id = $(this).closest(".checklistItem").data("id");
 	var isTicked = $(this).is(':checked')?'true':'false';
 	$.post( '{{ path('tick_item') }}', { id: id, is_ticked: isTicked }, function( data ) {
-
-	}, "json");
+  		$("#item_"+id).replaceWith(data);
+	}, "html");
 });
 $("#checklistItems").on('click', ".editItem", function(event) {
 	var id = $(this).closest(".checklistItem").data("id");
-	
 	$.get( Routing.generate('edit_item', { id: id }), function( data ) {
   		$("#item_"+id).replaceWith(data);
 	}, "html");
@@ -60,6 +68,12 @@ $("#checklistItems").on('click', ".updateItem", function(event) {
 	var id = $(this).attr("ref");
 	var text = $("#update_item_text_"+id).val();
 	$.post( '{{ path('update_item') }}', { id: id, text: text }, function( data ) {
+  		$("#item_"+id).replaceWith(data);
+	}, "html");
+});
+$("#checklistItems").on('click', ".cancelItem", function(event) {
+	var id = $(this).attr("ref");
+	$.get( Routing.generate('show_item', { id: id }), function( data ) {
   		$("#item_"+id).replaceWith(data);
 	}, "html");
 });

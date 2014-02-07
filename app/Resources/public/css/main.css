@@ -175,6 +175,14 @@ h1 {
 	margin-bottom: 15px;
 }
 
+.alert ul {
+    padding: 0;
+}
+
+.alert ul li {
+    list-style: none;
+}
+
 /* ==============
     MOBILE: Menu
    ============== */
@@ -211,7 +219,7 @@ nav ul {
    ========================================================================== */
 
 .checklistForm label {
-		display: none;
+		xdisplay: none;
 }
 
 ul#checklistItems {

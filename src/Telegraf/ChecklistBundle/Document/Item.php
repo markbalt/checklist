@@ -23,7 +23,7 @@ class Item
     /**
      * @ODM\Field(type="boolean")
      */
-    protected $isTicked;
+    protected $isTicked = 0;
 
     /**
      * @var date $ticked
@@ -56,9 +56,20 @@ class Item
      */
     private $contentChanged;
     
-    /** @ODM\ReferenceOne(targetDocument="User") */
+    /**
+     * @ODM\ReferenceOne(targetDocument="User")
+     */
     private $user;
     
+    /**
+     * @ODM\Field(type="boolean")
+     */
+    protected $isAnon = 0;
+
+    /**
+     * @ODM\Field(type="string")
+     */
+    protected $anonToken;
 
     /**
      * Get id
@@ -222,5 +233,49 @@ class Item
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set isAnon
+     *
+     * @param boolean $isAnon
+     * @return self
+     */
+    public function setIsAnon($isAnon)
+    {
+        $this->isAnon = $isAnon;
+        return $this;
+    }
+
+    /**
+     * Get isAnon
+     *
+     * @return boolean $isAnon
+     */
+    public function getIsAnon()
+    {
+        return $this->isAnon;
+    }
+
+    /**
+     * Set anonToken
+     *
+     * @param string $anonToken
+     * @return self
+     */
+    public function setAnonToken($anonToken)
+    {
+        $this->anonToken = $anonToken;
+        return $this;
+    }
+
+    /**
+     * Get anonToken
+     *
+     * @return string $anonToken
+     */
+    public function getAnonToken()
+    {
+        return $this->anonToken;
     }
 }

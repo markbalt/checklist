@@ -23,7 +23,7 @@ class Item
     /**
      * @ODM\Field(type="boolean")
      */
-    protected $isTicked;
+    protected $isTicked = 0;
 
     /**
      * @var date $ticked
@@ -56,9 +56,20 @@ class Item
      */
     private $contentChanged;
     
-    /** @ODM\ReferenceOne(targetDocument="User") */
+    /**
+     * @ODM\ReferenceOne(targetDocument="User")
+     */
     private $user;
     
+    /**
+     * @ODM\Field(type="boolean")
+     */
+    protected $isAnon = 0;
+
+    /**
+     * @ODM\Field(type="string")
+     */
+    protected $anonToken;
 
     /**
      * Get id
@@ -208,7 +219,7 @@ class Item
      * @param Documents\User $user
      * @return self
      */
-    public function setUser(Telegraf\ChecklistBundle\Document\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
         return $this;

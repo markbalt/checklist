@@ -4,6 +4,11 @@ homepage:
 create_item:
     pattern:  /createItem
     defaults: { _controller: TelegrafChecklistBundle:Default:createItem }
+show_item:
+    pattern:  /showItem/{id}
+    defaults: { _controller: TelegrafChecklistBundle:Default:showItem }
+    options:
+        expose: true
 edit_item:
     pattern:  /editItem/{id}
     defaults: { _controller: TelegrafChecklistBundle:Default:editItem }

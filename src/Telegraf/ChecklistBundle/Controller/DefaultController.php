@@ -3,36 +3,48 @@
 namespace Telegraf\ChecklistBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Telegraf\ChecklistBundle\Document\Item;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Telegraf\ChecklistBundle\Document\Item;
 use Telegraf\ChecklistBundle\Form\Type\RegistrationType;
 use Telegraf\ChecklistBundle\Form\Model\Registration;
 
 class DefaultController extends Controller
 {
-	public function indexAction()
+	public function indexAction(Request $request)
 	{
+		// get the appropriate checklist items
+		$q = $this->get('doctrine_mongodb')
+		    ->getManager()
+			->createQueryBuilder('TelegrafChecklistBundle:Item');
+
 		// get the user id if there is one
 		$securityContext = $this->container->get('security.context');
-		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ) {
-		    $userId = $this->getUser()->getId();
-		} else {
-			$userId = null;
+
+		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') )
+		{
+		    $q->field('user.id')->equals($this->getUser()->getId());
 		}
-		
-		// get the appropriate checklist items
-		$items = $this->get('doctrine_mongodb')
-		    ->getManager()
-			->createQueryBuilder('TelegrafChecklistBundle:Item')
-		    ->field('user.id')->equals($userId)
-		    ->sort(array(
-			    'isTicked'  => 'ASC',
-			    'ticked' => 'DESC',
-			    'created' => 'DESC',
-				))        
-		    ->getQuery()
-		    ->execute();
+		elseif ($token = $request->getSession()->get('anon_token'))
+		{
+			// utilize token
+			$q->field('isAnon')->equals(true)
+				->field('anonToken')->equals($token);
+		}
+		else
+		{
+			// nothing to show, just render html response
+			return $this->render('TelegrafChecklistBundle:Default:index.html.twig', array('items' => array()));
+		}
+		    
+	    $items = $q->sort(array(
+		    'isTicked'  => 'ASC',
+		    'ticked' => 'DESC',
+		    'created' => 'DESC',
+			))        
+	    ->getQuery()
+	    ->execute();
 
 		// render html response
 		return $this->render('TelegrafChecklistBundle:Default:index.html.twig', array('items' => $items));
@@ -46,13 +58,25 @@ class DefaultController extends Controller
 		// create a new checklist item
 	    $item = new Item();
 	    $item->setText($text);
-	    // TODO: this should be handled by behaviors
 	    $item->setCreated(new \DateTime());
 	    
 	    // set the user if there is one
 		$securityContext = $this->container->get('security.context');
 		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ) {
 		    $item->setUser($this->getUser());
+		}
+		else
+		{
+			// get an token if there is one
+			if (!$token = $request->getSession()->get('anon_token'))
+			{
+				// create token
+				$token = hash('md5', uniqid("yea", true).$this->container->get('request')->getClientIp());
+				$request->getSession()->set('anon_token', $token);
+			}
+
+			$item->setIsAnon(1);
+			$item->setAnonToken($token);
 		}
 	    $item->setIsTicked(false);
 	    
@@ -94,13 +118,28 @@ class DefaultController extends Controller
 			"ticked" => $item->getTicked(),
 		);
 
-		// return json
-	    return new Response(json_encode($response)); 
+		// render html response
+    	return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
+	}
+
+	public function showItemAction($id)
+	{
+		// TODO: validate
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
+
+		// check the item object
+	    if (!$item) {
+	      throw $this->createNotFoundException('No checklist item found for id '.$id);
+	    }
+
+		// render html response
+    	return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
 	}
 
 	public function editItemAction($id)
 	{
-		// TODO:
+		// TODO: validate
 	    $dm = $this->get('doctrine_mongodb')->getManager();
 	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
 

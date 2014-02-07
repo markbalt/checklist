@@ -1,10 +1,14 @@
 <li class="checklistItem editing" id="item_{{ item.id }}">
     <input type="checkbox" class="tickItem" id="is_ticked_{{ item.id }}" {% if item.ticked is not null %}checked="checked"{% endif %} />
 	<span class="itemText">
-        <input type="text" id="update_item_text_{{ item.id }}" class="form-control" value="{{ item.text }}">
+        <input type="text" id="update_item_text_{{ item.id }}" class="form-control editItemText" value="{{ item.text }}">
     </span>
     <ul class="itemActions">
 		<li><a href="#" class="updateItem btn btn-primary" role="button" ref="{{ item.id }}">Save</a></li>
 		<li><a href="#" class="cancelItem btn btn-default" role="button" ref="{{ item.id }}">Cancel</a></li>
 	</ul>
 </li>
+
+<script>
+    $("#item_{{ item.id }}").data("id", "{{ item.id }}");
+</script>
