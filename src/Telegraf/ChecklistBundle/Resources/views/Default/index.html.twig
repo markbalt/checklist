@@ -71,6 +71,7 @@ $("#checklistItems").on('click', ".editItem", function(event) {
 	var id = $(this).closest(".checklistItem").data("id");
 	$.get( Routing.generate('edit_item', { id: id }), function( data ) {
   		$("#item_"+id).replaceWith(data);
+  		$("#update_item_text_"+id).focus();
 	}, "html");
 });
 $("#checklistItems").on('click', ".updateItem", function(event) {

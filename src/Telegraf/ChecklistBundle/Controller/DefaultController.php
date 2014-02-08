@@ -63,7 +63,8 @@ class DefaultController extends Controller
 	    
 	    // set the user if there is one
 		$securityContext = $this->container->get('security.context');
-		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ) {
+		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') )
+		{
 		    $item->setUser($this->getUser());
 		}
 		else
@@ -101,13 +102,9 @@ class DefaultController extends Controller
 	public function tickItemAction(Request $request)
 	{
 		$id = $request->request->get('id');
-	
-		// validate the item id
-	    $dm = $this->get('doctrine_mongodb')->getManager();
-	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
-
-		// check the item object
-	    if (!$item) {
+		
+		// validate and get the item document
+	    if (!$item = $this->getValidItem($id)) {
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
    
@@ -133,12 +130,8 @@ class DefaultController extends Controller
 
 	public function showItemAction($id)
 	{
-		// TODO: validate
-	    $dm = $this->get('doctrine_mongodb')->getManager();
-	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
-
-		// check the item object
-	    if (!$item) {
+		// validate and get the item document
+	    if (!$item = $this->getValidItem($id)) {
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
 
@@ -148,12 +141,10 @@ class DefaultController extends Controller
 
 	public function editItemAction($id)
 	{
-		// TODO: validate
-	    $dm = $this->get('doctrine_mongodb')->getManager();
-	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
-
-		// check the item object
-	    if (!$item) {
+		$dm = $this->get('doctrine_mongodb')->getManager();
+	    
+	    // validate and get the item document
+	    if (!$item = $this->getValidItem($id)) {
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
 
@@ -165,11 +156,8 @@ class DefaultController extends Controller
 	{
 		$id = $request->request->get('id');
 	
-		// validate the item id
-	    $dm = $this->get('doctrine_mongodb')->getManager();
-	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
-
-	    if (!$item) {
+		// validate and get the item document
+	    if (!$item = $this->getValidItem($id)) {
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
 
@@ -185,6 +173,7 @@ class DefaultController extends Controller
 	    	return new JsonResponse(array('message' => 'Task must be 1 to 10 characters.'), 400);
 		}
 		
+		$dm = $this->get('doctrine_mongodb')->getManager();
 	    $dm->flush();
 
 		// render html response
@@ -195,27 +184,44 @@ class DefaultController extends Controller
 	{
 		$id = $request->request->get('id');
 	
-		// validate the item id
-	    $dm = $this->get('doctrine_mongodb')->getManager();
-	    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->find($id);
-
-			// check the item object
-	    if (!$item) {
+		// validate and get the item document
+	    if (!$item = $this->getValidItem($id)) {
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
 
-			// remove document TODO: soft delete
-		  $dm->remove($item);
-			$dm->flush();
+		// remove document TODO: soft delete
+		$dm = $this->get('doctrine_mongodb')->getManager();
+		$dm->remove($item);
+		$dm->flush();
 
-			// create a json response
-			$response = array(
-				"id" => $item->getId(),
-				"text" => $item->getText(),
-				"is_ticked" => $item->getIsTicked(),
-			);
+		// create a json response
+		$response = array(
+			"id" => $item->getId(),
+			"text" => $item->getText(),
+			"is_ticked" => $item->getIsTicked(),
+		);
 
-			// return json
+		// return json
 	    return new Response(json_encode($response)); 
+	}
+	
+	private function getValidItem($id)
+	{
+		$dm = $this->get('doctrine_mongodb')->getManager();
+	    
+	    // validate the item id
+	    $dm = $this->get('doctrine_mongodb')->getManager();
+	    $securityContext = $this->container->get('security.context');
+		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') )
+		{
+		    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->findOneBy(array('id' => $id, 'user.id' => $this->getUser()->getId()));
+		}
+		elseif ($token = $this->getRequest()->getSession()->get('anon_token'))
+		{
+			// get by token
+		    $item = $dm->getRepository('TelegrafChecklistBundle:Item')->findOneBy(array('id' => $id, 'isAnon' => true, 'anonToken' => $token));
+		}
+		
+		return $item;
 	}
 }

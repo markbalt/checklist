@@ -141,14 +141,22 @@ nav a:hover {
     color: #fff;
 }
 
+nav a span {
+	margin-right: 5px;
+}
+
 .main {
     padding: 15px 0;
 }
 
 .main .row {
-    padding: 1% 0;
+    padding: 15px 0;
     width: 100%;
     margin: 0;
+}
+
+.first {
+	margin-top: 15px;
 }
 
 .footer-container footer {
@@ -181,6 +189,16 @@ h1 {
 
 .alert ul li {
     list-style: none;
+}
+
+@font-face{
+	font-family:'Glyphicons Halflings';
+	src:url('../../fonts/glyphicons-halflings-regular.eot');
+	src:url('../../fonts/glyphicons-halflings-regular.eot?#iefix')
+	format('embedded-opentype'),url('../../fonts/glyphicons-halflings-regular.woff')
+	format('woff'),url('../../onts/glyphicons-halflings-regular.ttf')
+	format('truetype'),url('../../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular')
+	format('svg')
 }
 
 /* ==============
@@ -249,6 +267,18 @@ ul#checklistItems li.checklistItem ul.itemActions li {
 		display: inline-block;
 		margin: 0 5px;
 		font-size: 12px;
+}
+
+ul#checklistItems li.checklistItem ul.itemActions li a span.label {
+		display: none;
+}
+
+ul#checklistItems li.checklistItem ul.itemActions li a.unselected {
+		color: #aaa;
+}
+
+ul#checklistItems li.checklistItem ul.itemActions li a.unselected:hover {
+		color: #666;
 }
 
 ul#checklistItems li.checklistItem .itemText {

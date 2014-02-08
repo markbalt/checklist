@@ -25,13 +25,13 @@
         <nav>
             <ul>
               {% if app.user %}
-                  <li><a href="{{ path('homepage') }}">{{ app.user }}</a></li>
-                  <li><a href="{{ path('fos_user_profile_edit') }}">Settings</a></li>
-                  <li><a href="{{ path('fos_user_security_logout') }}">Sign out</a></li>
+                  <li><a href="{{ path('homepage') }}"><span class="glyphicon glyphicon-tasks"></span> {{ app.user }}</a></li>
+                  <li><a href="{{ path('fos_user_profile_edit') }}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                  <li><a href="{{ path('fos_user_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Sign out</a></li>
                {% else %}
 		          <li><a href="{{ path('homepage') }}">Checklists</a></li>
                   <li><a href="{{ path('fos_user_registration_register') }}">Join</a></li>
-                  <li><a href="{{ path('fos_user_security_login') }}">Sign in</a></li>
+                  <li><a href="{{ path('fos_user_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
                {% endif %}
             </ul>
         </nav>
@@ -62,10 +62,15 @@
             <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         {% endblock %}
         <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src='//www.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-47876642-1']);
+			_gaq.push(['_trackPageview']);
+			
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
         </script>
     </body>
 </html>
