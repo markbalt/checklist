@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Telegraf\ChecklistBundle\Document\Item;
 use Telegraf\ChecklistBundle\Form\Type\RegistrationType;
 use Telegraf\ChecklistBundle\Form\Model\Registration;
@@ -54,7 +55,7 @@ class DefaultController extends Controller
 	{
 		// get the item text
   		$text = $request->request->get('text');
-
+  		
 		// create a new checklist item
 	    $item = new Item();
 	    $item->setText($text);
@@ -80,7 +81,15 @@ class DefaultController extends Controller
 		}
 	    $item->setIsTicked(false);
 	    
-	    // persist to the database
+	    // validate
+	    $validator = $this->get('validator');
+	    $errors = $validator->validate($item);
+	    
+	    if (count($errors) > 0) {
+	    	return new JsonResponse(array('message' => 'Task must be 1 to 10 characters.'), 400);
+		}
+		
+		// persist to the database
 	    $dm = $this->get('doctrine_mongodb')->getManager();
 	    $dm->persist($item);
 	    $dm->flush();
@@ -164,12 +173,18 @@ class DefaultController extends Controller
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
 
-	    $id = $request->request->get('id');
-
-	    // TODO: validate the text
-	    $text = $request->request->get('text');
-
+		// get the new text
+	    $text = $request->request->get('text');	    
 	    $item->setText($text);
+	    
+	    // validate
+	    $validator = $this->get('validator');
+	    $errors = $validator->validate($item);
+	    
+	    if (count($errors) > 0) {
+	    	return new JsonResponse(array('message' => 'Task must be 1 to 10 characters.'), 400);
+		}
+		
 	    $dm->flush();
 
 		// render html response

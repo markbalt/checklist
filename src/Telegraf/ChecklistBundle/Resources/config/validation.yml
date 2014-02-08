@@ -1,0 +1,4 @@
+Telegraf\ChecklistBundle\Document\Item:
+    properties:
+        text:
+            - NotBlank: ~

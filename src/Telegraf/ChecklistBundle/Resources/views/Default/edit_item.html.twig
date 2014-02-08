@@ -1,5 +1,6 @@
 <li class="checklistItem editing" id="item_{{ item.id }}">
     <input type="checkbox" class="tickItem" id="is_ticked_{{ item.id }}" {% if item.ticked is not null %}checked="checked"{% endif %} />
+    <span class="updateItemFormErrors"></span>
 	<span class="itemText">
         <input type="text" id="update_item_text_{{ item.id }}" class="form-control editItemText" value="{{ item.text }}">
     </span>
