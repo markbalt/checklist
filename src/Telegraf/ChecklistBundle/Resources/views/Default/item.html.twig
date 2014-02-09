@@ -1,14 +1,13 @@
-<li class="checklistItem" id="item_{{ item.id }}">
+<li class="checklistItem{% if item.isTicked %} completed{% endif %}" id="item_{{ item.id }}">
 	<input type="checkbox" class="tickItem" id="is_ticked_{{ item.id }}" {% if item.ticked is not null %}checked="checked"{% endif %} />
 	<span class="itemText">{{ item.text }}</span>
   <ul class="itemActions">
   	<li><a href="#" id="edit_{{ item.id }}" class="editItem unselected"><span class="label">Edit</span><span class="glyphicon glyphicon-pencil"></span></a></li>
   	<li><a href="#" id="delete_{{ item.id }}" class="deleteItem unselected"><span class="label">Delete</span><span class="glyphicon glyphicon-trash"></span></a></li>
-  	{% if item.created is not empty %}
-  		<li>Created: {{ item.created|date("m/d/y g:i:s a") }}</li>
-  	{% endif %}  	
-  	{% if item.ticked is not empty %}
-  		<li>Completed: {{ item.ticked|date("m/d/y g:i:s a") }}</li>
+  	{% if item.isTicked == false %}
+  		<li><a href="#" onclick="return false;" class="info" rel="tooltip" data-toggle="tooltip" title="Created {{ item.created|date("M j, Y g:i A") }}">{{ item.created|date("n/j/y") }}</a></li>
+  	{% else %}  	
+  		<li><a href="#" onclick="return false;" class="info" rel="tooltip" data-toggle="tooltip" title="Completed {{ item.created|date("M j, Y g:i A") }}">{{ item.ticked|date("n/j/y") }}</a></li>
   	{% endif %}
   </ul>
 </li>

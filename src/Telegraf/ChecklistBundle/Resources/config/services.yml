@@ -5,3 +5,9 @@ services:
 #    telegraf_checklist.example:
 #        class: %telegraf_checklist.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    telegraf_checklist.registration:
+        class: Telegraf\ChecklistBundle\EventListener\RegistrationListener
+        arguments: [@router]
+        tags:
+            - { name: kernel.event_subscriber }

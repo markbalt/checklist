@@ -25,3 +25,6 @@ tick_item:
     defaults: { _controller: TelegrafChecklistBundle:Default:tickItem }
     options:
         expose: true
+import_items:
+    pattern:  /importing
+    defaults: { _controller: TelegrafChecklistBundle:Default:importItems }

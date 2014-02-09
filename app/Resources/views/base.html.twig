@@ -38,6 +38,12 @@
 
         <div class="main-container">
             <div class="main wrapper clearfix">
+            
+	            {% for flashMessage in app.session.flashbag.get('success') %}
+				    <div class="alert alert-success">
+				        {{ flashMessage }}
+				    </div>
+				{% endfor %}
 
                 {% block body %}{% endblock %}                
 

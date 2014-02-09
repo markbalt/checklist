@@ -245,8 +245,8 @@ ul#checklistItems {
 		padding: 0;
 }
 
-ul#checklistItems li.checklistItem:first-child {
-		border-top: #dededc 1px solid;
+ul#checklistItems li.checklistItem:last-child {
+		border-bottom: #dededc 1px solid;
 }
 
 ul#checklistItems li.checklistItem {
@@ -254,7 +254,7 @@ ul#checklistItems li.checklistItem {
 		margin: 0;
 		padding: 10px 15px;
 		background: #fff;
-		border-bottom: #dededc 1px solid;
+		border-top: #dededc 1px solid;
 }
 
 ul#checklistItems li.checklistItem ul.itemActions {
@@ -298,6 +298,14 @@ ul#checklistItems li.checklistItem.editing ul.itemActions {
 		margin: 0;
 		padding: 0;
 		display: inline;
+}
+
+ul#checklistItems li.checklistItem.completed {
+		color: #ccc;
+}
+
+ul#checklistItems li.checklistItem.completed ul.itemActions li a.info {
+		color: #5cb85c;
 }
 
 /* ==========================================================================

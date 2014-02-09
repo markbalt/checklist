@@ -101,5 +101,8 @@ $("#checklistItems").on('click', ".deleteItem", function(event) {
 		$("#item_"+data.id).remove();
 	}, "json");
 });
+$(function () {
+    $("[rel='tooltip']").tooltip();
+});
 </script>
 {% endblock %}

@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Telegraf\ChecklistBundle\Document\Item;
-use Telegraf\ChecklistBundle\Form\Type\RegistrationType;
-use Telegraf\ChecklistBundle\Form\Model\Registration;
 
 class DefaultController extends Controller
 {
@@ -203,6 +201,40 @@ class DefaultController extends Controller
 
 		// return json
 	    return new Response(json_encode($response)); 
+	}
+	
+	public function importItemsAction(Request $request)
+	{
+		// get an token if there is one
+		if ($token = $request->getSession()->get('anon_token'))
+		{
+    		// add anonymous items to this user account if there are any
+    		$items = $this->get('doctrine_mongodb')
+    			->getManager()
+				->createQueryBuilder('TelegrafChecklistBundle:Item')
+			    // Find the item
+			    ->findAndUpdate()
+			    ->field('isAnon')->set(true)
+			    ->field('anonToken')->equals($token)
+			
+			    // Update found itsm
+			    ->field('user.id')->set($this->getUser()->getId())
+			    ->field('isAnon')->set(false)
+			    ->field('anonToken')->set(null)
+			    ->getQuery()
+			    ->execute();
+			
+			// show message?
+			if ( ($numItems = count($items) ) > 0)
+			{
+				$this->get('session')->getFlashBag()->add(
+		            'success',
+		            'We noticed you had '.$numItems.' unsaved task'.( ($numItems > 1)?'s':'').'. We\'ve saved your task'.( ($numItems > 1)?'s':'').' to your account.'
+		        );
+	        }
+		}
+		
+		return $this->redirect($this->generateUrl('homepage'));
 	}
 	
 	private function getValidItem($id)
