@@ -209,24 +209,31 @@ class DefaultController extends Controller
 		if ($token = $request->getSession()->get('anon_token'))
 		{
     		// add anonymous items to this user account if there are any
-    		$items = $this->get('doctrine_mongodb')
+    		$numItems = $this->get('doctrine_mongodb')
     			->getManager()
 				->createQueryBuilder('TelegrafChecklistBundle:Item')
 			    // Find the item
-			    ->findAndUpdate()
-			    ->field('isAnon')->set(true)
+			    ->field('isAnon')->equals(true)
 			    ->field('anonToken')->equals($token)
-			
-			    // Update found itsm
-			    ->field('user.id')->set($this->getUser()->getId())
-			    ->field('isAnon')->set(false)
-			    ->field('anonToken')->set(null)
-			    ->getQuery()
-			    ->execute();
+			    ->getQuery()->execute()->count();
 			
 			// show message?
-			if ( ($numItems = count($items) ) > 0)
+			if ($numItems > 0)
 			{
+				// update items
+				$this->get('doctrine_mongodb')
+	    			->getManager()
+					->createQueryBuilder('TelegrafChecklistBundle:Item')
+					->update()
+					->multiple(true)
+				    ->field('isAnon')->equals(true)
+				    ->field('anonToken')->equals($token)
+				    ->field('user.id')->set($this->getUser()->getId())
+				    ->field('isAnon')->set(false)
+				    ->field('anonToken')->set(null)
+				    ->getQuery()
+				    ->execute();
+				    
 				$this->get('session')->getFlashBag()->add(
 		            'success',
 		            'We noticed you had '.$numItems.' unsaved task'.( ($numItems > 1)?'s':'').'. We\'ve saved your task'.( ($numItems > 1)?'s':'').' to your account.'

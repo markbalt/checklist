@@ -7,8 +7,6 @@ use FOS\UserBundle\Event\FormEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Telegraf\ChecklistBundle\Document\Item;
-use Telegraf\ChecklistBundle\EventListener\DocumentManager;
 
 class RegistrationListener implements EventSubscriberInterface
 {
