@@ -236,10 +236,6 @@ nav ul {
    Author's custom styles
    ========================================================================== */
 
-.checklistForm label {
-		xdisplay: none;
-}
-
 ul#checklistItems {
 		margin: 15px 0;
 		padding: 0;

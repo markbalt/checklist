@@ -236,7 +236,7 @@ class DefaultController extends Controller
 				    
 				$this->get('session')->getFlashBag()->add(
 		            'success',
-		            'We noticed you had '.$numItems.' unsaved task'.( ($numItems > 1)?'s':'').'. We\'ve saved your task'.( ($numItems > 1)?'s':'').' to your account.'
+		            'We noticed you had '.$numItems.' unsaved task'.( ($numItems > 1)?'s':'').'. We\'ve saved these task'.( ($numItems > 1)?'s':'').' to your account.'
 		        );
 	        }
 		}

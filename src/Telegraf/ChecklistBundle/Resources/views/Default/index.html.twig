@@ -4,9 +4,9 @@
 	
 	<div class="row">
 	  <div class="col-md-12">
-		<form role="form">
+		<form role="form" id="itemForm">
 			<span id="addItemFormErrors"></span>
-			<div class="form-group checklistForm">
+			<div class="form-group">
 				<label for="newItemText">Enter a Task:</label>
 				<input pattern=".{1,100}" required title="Task must be 1 to 10 characters." type="text" class="form-control" id="newItemText" placeholder="My task..." />
 			</div>
@@ -46,14 +46,16 @@ $('#checklistItems').on('keypress', '.editItemText', function(e){
 		e.preventDefault();
 	}
 });
-$("#addItem").click(function(event) {
+$('#itemForm').on('click', '#addItem', function(event) {
 	event.preventDefault();
 	if ($("#newItemText").val()=='') {
 		return;
 	}
 	$.post('{{ path('create_item') }}', { text: $("#newItemText").val() }, function(data) {
-		$("ul#checklistItems").prepend(data);
+		$("ul#checklistItems").show().prepend(data);
 		$("#newItemText").val("");
+		$("ul#checklistItems li.checklistItem").last().css("border-bottom", "#dededc 1px solid");
+		
 	}, "html").fail(function(xhr) {
 		var json = $.parseJSON(xhr.responseText);
 		$('#addItemFormErrors').html(json.message);
