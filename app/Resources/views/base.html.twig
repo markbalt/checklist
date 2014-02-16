@@ -29,8 +29,8 @@
                   <li><a href="{{ path('fos_user_profile_edit') }}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                   <li><a href="{{ path('fos_user_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Sign out</a></li>
                {% else %}
-		          <li><a href="{{ path('homepage') }}">Checklists</a></li>
-                  <li><a href="{{ path('fos_user_registration_register') }}">Join</a></li>
+		          <li><a href="{{ path('homepage') }}"><span class="glyphicon glyphicon-tasks"></span> Checklist</a></li>
+                  <li><a href="{{ path('fos_user_registration_register') }}"><span class="glyphicon glyphicon-edit"></span> Join</a></li>
                   <li><a href="{{ path('fos_user_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
                {% endif %}
             </ul>
@@ -38,23 +38,19 @@
 
         <div class="main-container">
             <div class="main wrapper clearfix">
-            
-	            {% for flashMessage in app.session.flashbag.get('success') %}
-				    <div class="alert alert-success">
-				        {{ flashMessage }}
-				    </div>
-				{% endfor %}
-
-                {% block body %}{% endblock %}                
-
-            </div> <!-- #main -->
-        </div> <!-- #main-container -->
-
-        <div class="footer-container">
-            <footer class="wrapper">
-                <p class="text-muted">&copy; 2014 <a href="http://github.com/markbalt">Mark Baltrusaitis</a> / <a href="http://github.com/markbalt/checklist">Github Repo</a></p>
-            </footer>
+                {% for flashMessage in app.session.flashbag.get('success') %}
+        		    <div class="alert alert-success">
+        		        {{ flashMessage }}
+        		    </div>
+        		{% endfor %}
+                {% block body %}{% endblock %}
+            </div>
         </div>
+
+        <footer class="wrapper">
+            <p class="text-muted">&copy; 2014 <a href="http://github.com/markbalt">Mark Baltrusaitis</a> / <a href="http://github.com/markbalt/checklist">Github Repo</a></p>
+        </footer>
+
 
         {% javascripts
             '../app/Resources/public/js/jquery-1.10.2.min.js'

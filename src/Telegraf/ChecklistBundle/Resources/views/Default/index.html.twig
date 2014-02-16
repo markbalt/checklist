@@ -8,21 +8,29 @@
 			    <span id="addItemFormErrors"></span>
 			    <div class="form-group">
 				    <label for="newItemText">Enter a Task:</label>
-				    <input pattern=".{1,100}" required title="Task must be 1 to 10 characters." type="text" class="form-control" id="newItemText" placeholder="My task..." />
+				    <input pattern=".{1,100}" required title="Task must be 1 to 100 characters." type="text" class="form-control" id="newItemText" placeholder="My task..." />
                 </div>
             </div>
             <div class="col-md-10">
     			<button type="button" class="btn btn-primary" id="addItem">Add</button>
             </div>
-            <div class="col-md-2 text-right">
-                {% if app.user %}
-                    {% if app.user.hideCompleted == true %}
-                        <a href="{{ path('homepage', {'hc': 'false'}) }}">Show completed</a>
-                    {% else %}
-                        <a href="{{ path('homepage', {'hc': 'true'}) }}">Hide completed</a>                    
-                    {% endif %}
-                {% endif %}
-            </div>
+            {% if app.user %}
+                <div class="col-md-2 text-right">
+                    <div class="btn-group text-left">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-cog"></span> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right" role="menu">
+                        
+                        {% if app.user.hideCompleted == true %}
+                            <li><a href="{{ path('homepage', {'hc': 'false'}) }}"><span class="glyphicon glyphicon-ok"></span> Hide completed</a></li>
+                        {% else %}
+                            <li><a href="{{ path('homepage', {'hc': 'true'}) }}">Hide completed</a></li>
+                        {% endif %}    
+                      </ul>
+                    </div>
+                </div>
+            {% endif %}
         </div>
 	</form>
 	

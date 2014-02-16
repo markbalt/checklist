@@ -7,26 +7,17 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use FOS\UserBundle\Controller\ProfileController as BaseController;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ProfileController extends BaseController
+class ChangePasswordController extends ContainerAware
 {
     /**
-     * Show the user
+     * Change user password
      */
-    public function showAction()
-    {        
-        $url = $this->container->get('router')->generate('fos_user_profile_edit');
-        return new RedirectResponse($url);
-    }
-    
-    /**
-     * Edit the user
-     */
-    public function editAction(Request $request)
+    public function changePasswordAction(Request $request)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
@@ -37,19 +28,19 @@ class ProfileController extends BaseController
         $dispatcher = $this->container->get('event_dispatcher');
 
         $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_INITIALIZE, $event);
+        $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_INITIALIZE, $event);
 
         if (null !== $event->getResponse()) {
             return $event->getResponse();
         }
 
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
-        $formFactory = $this->container->get('fos_user.profile.form.factory');
+        $formFactory = $this->container->get('fos_user.change_password.form.factory');
 
         $form = $formFactory->createForm();
         $form->setData($user);
 
-        if ('POST' === $request->getMethod()) {
+        if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
@@ -57,23 +48,23 @@ class ProfileController extends BaseController
                 $userManager = $this->container->get('fos_user.user_manager');
 
                 $event = new FormEvent($form, $request);
-                $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
+                $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_SUCCESS, $event);
 
                 $userManager->updateUser($user);
 
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->container->get('router')->generate('fos_user_profile_edit');
+                    $url = $this->container->get('router')->generate('fos_user_change_password');
                     $response = new RedirectResponse($url);
                 }
 
-                $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+                $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
                 return $response;
             }
         }
 
         return $this->container->get('templating')->renderResponse(
-            'FOSUserBundle:Profile:edit.html.'.$this->container->getParameter('fos_user.template.engine'),
+            'FOSUserBundle:ChangePassword:changePassword.html.'.$this->container->getParameter('fos_user.template.engine'),
             array('form' => $form->createView())
         );
     }

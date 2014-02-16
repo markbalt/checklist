@@ -29,13 +29,13 @@ profile:
     edit:
         submit: Update
     flash:
-        updated: The profile has been updated
+        updated: Profile updated
 
 # Password change
 change_password:
     submit: Change password
     flash:
-        success: The password has been changed
+        success: Password changed
 
 # Registration
 registration:

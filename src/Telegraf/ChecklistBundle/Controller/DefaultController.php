@@ -104,7 +104,7 @@ class DefaultController extends Controller
 	    $errors = $validator->validate($item);
 	    
 	    if (count($errors) > 0) {
-	    	return new JsonResponse(array('message' => 'Task must be 1 to 10 characters.'), 400);
+	    	return new JsonResponse(array('message' => 'Task must be 1 to 100 characters.'), 400);
 		}
 		
 		// persist to the database

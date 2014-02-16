@@ -15,5 +15,8 @@
 {% if ajax %}
 <script>
     $("#item_{{ item.id }}").data("id", "{{ item.id }}");
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
 </script>
 {% endif %}
