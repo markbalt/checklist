@@ -61,7 +61,7 @@ textarea {
    ========================================================================== */
 
 body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    font: 14px/26px Helvetica, Helvetica Neue, Arial;
     background-color: #fff;
 }
 
@@ -155,6 +155,12 @@ nav a span {
     margin: 0;
 }
 
+.main .first-row {
+    padding: 0 0 15px 0;
+    width: 100%;
+    margin: 0;
+}
+
 .first {
 	margin-top: 15px;
 }
@@ -239,6 +245,7 @@ nav ul {
 ul#checklistItems {
 		margin: 15px 0;
 		padding: 0;
+		font-size: 16px;
 }
 
 ul#checklistItems li.checklistItem:last-child {

@@ -1,0 +1,10 @@
+<li class="checklistItem deleted" id="item_{{ item.id }}">
+    <p>Task deleted.</p>
+	<ul class="itemActions">
+	  	<li><a href="#" id="undo_{{ item.id }}" class="undoDeleteItem unselected" ref="{{ item.id }}">Undo</a></li>
+    </ul>
+</li>
+
+<script>
+    $("#item_{{ item.id }}").data("id", "{{ item.id }}");
+</script>

@@ -15,6 +15,11 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @MongoDB\Field(type="boolean")
+     */
+    protected $hideCompleted = 1;
+    
     public function __construct()
     {
         parent::__construct();
@@ -29,5 +34,27 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set hideCompleted
+     *
+     * @param boolean $hideCompleted
+     * @return self
+     */
+    public function setHideCompleted($hideCompleted)
+    {
+        $this->hideCompleted = $hideCompleted;
+        return $this;
+    }
+
+    /**
+     * Get hideCompleted
+     *
+     * @return boolean $hideCompleted
+     */
+    public function getHideCompleted()
+    {
+        return $this->hideCompleted;
     }
 }

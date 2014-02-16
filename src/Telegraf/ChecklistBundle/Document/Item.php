@@ -44,7 +44,7 @@ class Item
      * @var date $updated
      *
      * @ODM\Date
-     * @Gedmo\Timestampable
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
     
@@ -70,6 +70,11 @@ class Item
      * @ODM\Field(type="string")
      */
     protected $anonToken;
+    
+    /**
+     * @ODM\Field(type="boolean")
+     */
+    protected $isActive = 1;
 
     /**
      * Get id
@@ -277,5 +282,27 @@ class Item
     public function getAnonToken()
     {
         return $this->anonToken;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return self
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean $isActive
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

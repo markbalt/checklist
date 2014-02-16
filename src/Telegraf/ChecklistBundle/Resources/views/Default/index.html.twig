@@ -2,19 +2,30 @@
 
 	{% block body %}
 	
-	<div class="row">
-	  <div class="col-md-12">
-		<form role="form" id="itemForm">
-			<span id="addItemFormErrors"></span>
-			<div class="form-group">
-				<label for="newItemText">Enter a Task:</label>
-				<input pattern=".{1,100}" required title="Task must be 1 to 10 characters." type="text" class="form-control" id="newItemText" placeholder="My task..." />
-			</div>
-			<button type="button" class="btn btn-default" id="addItem">Add</button>
-		</form>
-	  </div>
-	</div>
-
+	<form role="form" id="itemForm">
+    	<div class="row first-row">
+            <div class="col-md-12">		
+			    <span id="addItemFormErrors"></span>
+			    <div class="form-group">
+				    <label for="newItemText">Enter a Task:</label>
+				    <input pattern=".{1,100}" required title="Task must be 1 to 10 characters." type="text" class="form-control" id="newItemText" placeholder="My task..." />
+                </div>
+            </div>
+            <div class="col-md-10">
+    			<button type="button" class="btn btn-primary" id="addItem">Add</button>
+            </div>
+            <div class="col-md-2 text-right">
+                {% if app.user %}
+                    {% if app.user.hideCompleted == true %}
+                        <a href="{{ path('homepage', {'hc': 'false'}) }}">Show completed</a>
+                    {% else %}
+                        <a href="{{ path('homepage', {'hc': 'true'}) }}">Hide completed</a>                    
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+	</form>
+	
  	<ul id="checklistItems">
 	 	{% for item in items %}
 	 		{{ include(
@@ -54,7 +65,7 @@ $('#itemForm').on('click', '#addItem', function(event) {
 	$.post('{{ path('create_item') }}', { text: $("#newItemText").val() }, function(data) {
 		$("ul#checklistItems").show().prepend(data);
 		$("#newItemText").val("");
-		$("ul#checklistItems li.checklistItem").last().css("border-bottom", "#dededc 1px solid");
+		normalizeItems();
 		
 	}, "html").fail(function(xhr) {
 		var json = $.parseJSON(xhr.responseText);
@@ -91,6 +102,7 @@ $("#checklistItems").on('click', ".updateItem", function(event) {
 	}, "json");
 });
 $("#checklistItems").on('click', ".cancelItem", function(event) {
+	event.preventDefault();
 	var id = $(this).attr("ref");
 	$.get( Routing.generate('show_item', { id: id }), function( data ) {
   		$("#item_"+id).replaceWith(data);
@@ -100,11 +112,24 @@ $("#checklistItems").on('click', ".deleteItem", function(event) {
 	event.preventDefault();
 	var id = $(this).closest(".checklistItem").data("id");
 	$.post( '{{ path('delete_item') }}', { id: id }, function( data ) {
-		$("#item_"+data.id).remove();
-	}, "json");
+  		$("#item_"+id).replaceWith(data);
+		normalizeItems();
+	}, "html");
+});
+$("#checklistItems").on('click', ".undoDeleteItem", function(event) {
+	event.preventDefault();
+	var id = $(this).attr("ref");
+	$.post( '{{ path('undo_delete_item') }}', { id: id }, function( data ) {
+  		$("#item_"+id).replaceWith(data);
+		normalizeItems();
+	}, "html");
 });
 $(function () {
     $("[rel='tooltip']").tooltip();
 });
+function normalizeItems() {
+    $("ul#checklistItems li.checklistItem").last().css("border-bottom", "#dededc 1px solid");
+}
+$("#newItemText").focus();
 </script>
 {% endblock %}

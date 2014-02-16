@@ -13,17 +13,35 @@ class DefaultController extends Controller
 {
 	public function indexAction(Request $request)
 	{
+	    // going to need the security context
+		$securityContext = $this->container->get('security.context');
+
+        // check for showCompleted setting
+        if ( ($hideCompleted = $request->query->get('hc'))
+            && $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') )
+		{
+		    $user = $this->getUser();
+            $user->setHideCompleted( ($hideCompleted == 'true')?true:false );
+            // persist to the database
+    	    $dm = $this->get('doctrine_mongodb')->getManager();
+    	    $dm->persist($user);
+    	    $dm->flush();
+  		}
+  		
 		// get the appropriate checklist items
 		$q = $this->get('doctrine_mongodb')
 		    ->getManager()
 			->createQueryBuilder('TelegrafChecklistBundle:Item');
 
 		// get the user id if there is one
-		$securityContext = $this->container->get('security.context');
-
 		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') )
 		{
 		    $q->field('user.id')->equals($this->getUser()->getId());
+		    
+		    if ($this->getUser()->getHideCompleted())
+		    {
+    		    $q->field('isTicked')->equals(false);
+		    }
 		}
 		elseif ($token = $request->getSession()->get('anon_token'))
 		{
@@ -37,7 +55,8 @@ class DefaultController extends Controller
 			return $this->render('TelegrafChecklistBundle:Default:index.html.twig', array('items' => array()));
 		}
 		    
-	    $items = $q->sort(array(
+	    $items = $q->field('isActive')->equals(true)
+	    	->sort(array(
 		    'isTicked'  => 'ASC',
 		    'ticked' => 'DESC',
 		    'created' => 'DESC',
@@ -187,20 +206,31 @@ class DefaultController extends Controller
 	      throw $this->createNotFoundException('No checklist item found for id '.$id);
 	    }
 
-		// remove document TODO: soft delete
+		// soft delete document
 		$dm = $this->get('doctrine_mongodb')->getManager();
-		$dm->remove($item);
+		$item->setIsActive(false);
 		$dm->flush();
+		
+		// render html response
+    	return $this->render('TelegrafChecklistBundle:Default:delete.html.twig', array('item' => $item));
+	}
+	
+	public function undoDeleteItemAction(Request $request)
+	{
+		$id = $request->request->get('id');
+	
+		// validate and get the item document
+	    if (!$item = $this->getValidItem($id)) {
+	      throw $this->createNotFoundException('No checklist item found for id '.$id);
+	    }
 
-		// create a json response
-		$response = array(
-			"id" => $item->getId(),
-			"text" => $item->getText(),
-			"is_ticked" => $item->getIsTicked(),
-		);
-
-		// return json
-	    return new Response(json_encode($response)); 
+        // undo soft delete
+		$dm = $this->get('doctrine_mongodb')->getManager();
+		$item->setIsActive(true);
+		$dm->flush();
+		
+		// render html response
+    	return $this->render('TelegrafChecklistBundle:Default:item.html.twig', array('item' => $item, 'ajax' => true));
 	}
 	
 	public function importItemsAction(Request $request)
