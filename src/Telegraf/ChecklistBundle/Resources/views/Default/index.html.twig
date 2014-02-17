@@ -132,6 +132,11 @@ $("#checklistItems").on('click', ".undoDeleteItem", function(event) {
 		normalizeItems();
 	}, "html");
 });
+$("#checklistItems").on('click', ".closeItem", function(event) {
+	event.preventDefault();
+	var id = $(this).closest(".checklistItem").data("id");
+	$("#item_"+id).remove();
+});
 $(function () {
     $("[rel='tooltip']").tooltip();
 });

@@ -106,3 +106,8 @@ fos_user:
     db_driver: mongodb
     firewall_name: main
     user_class: Telegraf\ChecklistBundle\Document\User
+    from_email:
+        address:        noreply@whatthechecklistdotcom.com
+        sender_name:    Checklist Team
+    service:
+        mailer: fos_user.mailer.default
